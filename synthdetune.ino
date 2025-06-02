@@ -274,11 +274,15 @@ adjustedInterval = constrain(adjustedInterval, minInterval, maxInterval);
 // === Gyro for Detune (Only update on trigger) ===
 float rawZ = abs(g.gyro.z);
 static float smoothedGyroZ = 0;
-float gyroAlpha = 0.1;
+float gyroAlpha = 0.5;
 smoothedGyroZ = (1 - gyroAlpha) * smoothedGyroZ + gyroAlpha * rawZ;
 
 int newDetuneCents = smoothedGyroZ * 250;
+if (newDetuneCents <= 8) {
+  newDetuneCents = 0;
+}
 newDetuneCents = constrain(newDetuneCents, 0, 100);
+
 
 // === Arpeggiator Trigger ===
 unsigned long now = millis();
